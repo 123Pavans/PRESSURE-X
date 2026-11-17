@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRESSURE-X | RR SupeRR Selector | IPL 2027 Cricket Scouting Analytics</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- External Libraries (Chart.js, PapaParse, Lucide) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div class="brand-wrapper" data-target-page="home">
+        <div class="brand-logo-badge">RR</div>
+        <div class="brand-text">
+          <h1>PRESSURE<span>-X</span></h1>
+          <span class="brand-tag">SupeRR Selector • IPL 2027</span>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a class="nav-link active" data-target-page="home"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+          <li><a class="nav-link" data-target-page="batters"><i data-lucide="users"></i> Batters (10)</a></li>
+          <li><a class="nav-link" data-target-page="bowlers"><i data-lucide="target"></i> Bowlers (10)</a></li>
+          <li><a class="nav-link" data-target-page="phases"><i data-lucide="pie-chart"></i> Phase Analysis</a></li>
+          <li><a class="nav-link" data-target-page="methodology"><i data-lucide="cpu"></i> Methodology</a></li>
+          <li><a class="nav-link" data-target-page="recruitment"><i data-lucide="briefcase"></i> Recruitment</a></li>
+          <li><a class="nav-link" data-target-page="downloads"><i data-lucide="download"></i> Downloads</a></li>
+        </ul>
+      </nav>
+
+      <button class="mobile-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Live Status Ribbon -->
+  <div class="status-ribbon">
+    <div class="container ribbon-content">
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <span class="ribbon-pill"><span class="dot"></span> T20 SCOUTING ENGINE ONLINE</span>
+        <span>• Target: Indian Premier League (IPL) 2027 Auction Pool</span>
+      </div>
+      <div>
+        <span>Candidate Database: SMAT Domestic Archive (Through 2024/25)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Multi-Page App View Container -->
+  <main class="container">
+
+    <!-- ==================== PAGE 1: HOME DASHBOARD ==================== -->
+    <section id="home" class="page-view active">
+      <!-- Hero Banner -->
+      <div class="hero-grid">
+        <div class="glass-card hero-banner">
+          <div class="hero-headline">
+            <span class="page-badge"><i data-lucide="sparkles"></i> Rajasthan Royals Talent Analytics</span>
+            <h2>PRESSURE<span class="pink">-X</span> RECRUITMENT</h2>
+            <p class="hero-desc">
+              Data-driven cricket scouting intelligence engine engineered to discover high-ceiling emerging Indian T20 talent. Evaluates domestic SMAT match-pressure performance, weighted percentiles, and phase-specific bowling mastery ahead of the <strong>IPL 2027 auction cycle</strong>.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-target-page="batters">
+              <i data-lucide="crosshair"></i> Explore Top 10 Batters
+            </button>
+            <button class="btn btn-outline-blue" data-target-page="bowlers">
+              <i data-lucide="target"></i> Explore Top 10 Bowlers
+            </button>
+            <button class="btn btn-secondary" data-target-page="recruitment">
+              <i data-lucide="award"></i> Scouting Dossier
+            </button>
+          </div>
+        </div>
+
+        <!-- Radar Benchmark Card -->
+        <div class="glass-card chart-card">
+          <div class="chart-header">
+            <h4><i data-lucide="activity"></i> Benchmark Comparison</h4>
+            <span class="tag-badge pink">Rank #1 Profiles</span>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="homeComparisonRadar"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- High-Level KPI Matrix -->
+      <div class="kpi-grid">
+        <div class="glass-card kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Shortlisted Batters</span>
+            <div class="kpi-icon-box" style="background:var(--rr-pink-soft); color:var(--rr-pink);"><i data-lucide="users"></i></div>
+          </div>
+          <div class="kpi-val">10</div>
+          <div class="kpi-sub">Filtered from 156 SMAT candidates</div>
+        </div>
+
+        <div class="glass-card kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Shortlisted Bowlers</span>
+            <div class="kpi-icon-box" style="background:rgba(37,99,235,0.15); color:#60a5fa;"><i data-lucide="target"></i></div>
+          </div>
+          <div class="kpi-val">10</div>
+          <div class="kpi-sub">Filtered from 129 SMAT candidates</div>
+        </div>
+
+        <div class="glass-card kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">#1 Emerging Batter</span>
+            <div class="kpi-icon-box" style="background:rgba(245,158,11,0.15); color:#fbbf24;"><i data-lucide="award"></i></div>
+          </div>
+          <div class="kpi-val" id="homeTopBatter" style="font-size:1.5rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Virat Singh</div>
+          <div class="kpi-sub">Score: <strong style="color:var(--rr-pink);" id="homeTopBatterScore">73.96</strong> | 1,236 runs</div>
+        </div>
+
+        <div class="glass-card kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">#1 Emerging Bowler</span>
+            <div class="kpi-icon-box" style="background:rgba(16,185,129,0.15); color:#34d399;"><i data-lucide="zap"></i></div>
+          </div>
+          <div class="kpi-val" id="homeTopBowler" style="font-size:1.5rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Khrievitso Kense</div>
+          <div class="kpi-sub">Score: <strong style="color:#60a5fa;" id="homeTopBowlerScore">75.23</strong> | Econ: 5.39</div>
+        </div>
+      </div>
+
+      <!-- Quick Executive Summary & Scouting Architecture -->
+      <div class="glass-card" style="margin-bottom:2.5rem;">
+        <h3 style="font-size:1.25rem; font-weight:800; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
+          <i data-lucide="compass" style="color:var(--rr-pink);"></i> Scouting Intelligence Architecture
+        </h3>
+        <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.7; margin-bottom:1.5rem;">
+          PRESSURE-X employs a dual multi-factor percentile framework specifically configured to bypass raw aggregate volume bias. By isolating true domestic match efficiency across Syed Mushtaq Ali Trophy (SMAT) seasons, the engine prioritizes players demonstrating superior phase discipline, scoring consistency, and tactical versatility under competitive domestic constraints.
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+          <div style="background:rgba(7,13,30,0.6); border:1px solid var(--border-glass); border-radius:10px; padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; color:var(--rr-pink); font-weight:700;">
+              <i data-lucide="check-circle-2"></i> Emerging Criteria Filter
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+              Restricted to domestic talents age ≤ 29 with minimum thresholds of 8 matches & 250 runs (batters) or 8 matches & 12 wickets (bowlers).
+            </p>
+          </div>
+
+          <div style="background:rgba(7,13,30,0.6); border:1px solid var(--border-glass); border-radius:10px; padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; color:#60a5fa; font-weight:700;">
+              <i data-lucide="pie-chart"></i> Phase-Specialized Bowling
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+              Every candidate ball bowled categorized into Powerplay (0–5), Middle (6–14), and Death (15–19) to isolate defensive economy vs wicket-taking phase threats.
+            </p>
+          </div>
+
+          <div style="background:rgba(7,13,30,0.6); border:1px solid var(--border-glass); border-radius:10px; padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; color:#fbbf24; font-weight:700;">
+              <i data-lucide="shield-alert"></i> Rigorous Data Integrity
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+              Zero statistical fabrication. Names, stats, and phase metrics strictly reflect authentic domestic ball-by-ball outputs with transparent limitation disclosures.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 2: BATTER SCOUTING ==================== -->
+    <section id="batters" class="page-view">
+      <div class="page-header">
+        <span class="page-badge"><i data-lucide="user-check"></i> Shortlist 01</span>
+        <h2 class="page-title">Top 10 Emerging Batters</h2>
+        <p class="page-subtitle">Ranked by the PRESSURE-X multi-factor weighted scoring model across domestic T20 cricket.</p>
+      </div>
+
+      <!-- Priority Prospects Showcase (Top 3) -->
+      <div class="priority-section-title">
+        <h3><i data-lucide="flame" style="color:var(--rr-pink);"></i> Top 3 Priority Batting Prospects</h3>
+        <span class="tag-badge pink">Highest Scouting Tier</span>
+      </div>
+      <div class="prospects-grid" id="priorityBattersContainer"></div>
+
+      <!-- Interactive Comparison Chart -->
+      <div class="glass-card chart-card" style="margin-bottom:2.5rem;">
+        <div class="chart-header">
+          <h4><i data-lucide="bar-chart-2"></i> Scouting Score vs Season Strike Rate Comparison</h4>
+          <span class="tag-badge blue">Top 10 Batters Distribution</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="battersChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Controls & Search -->
+      <div class="controls-bar">
+        <div class="search-box">
+          <i data-lucide="search"></i>
+          <input type="text" id="batterSearch" class="search-input" placeholder="Search batter name, state team...">
+        </div>
+        <div class="filters-group">
+          <span style="font-size:0.8rem; color:var(--text-muted);"><i data-lucide="info"></i> Click table headers to sort</span>
+        </div>
+      </div>
+
+      <!-- Batters Table -->
+      <div class="table-responsive">
+        <table class="data-table" id="battersTable">
+          <thead>
+            <tr>
+              <th data-sort-table="batters" data-sort-field="Final_Rank">Rank <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="batters" data-sort-field="batter">Batter Name <i data-lucide="arrow-up-down"></i></th>
+              <th>Domestic Team</th>
+              <th data-sort-table="batters" data-sort-field="Total_Matches">Matches <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="batters" data-sort-field="Total_Runs">Total Runs <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="batters" data-sort-field="Avg_Season_Average">Average <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="batters" data-sort-field="Avg_Season_SR">Strike Rate <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="batters" data-sort-field="Final_Scouting_Score">Scouting Score <i data-lucide="arrow-up-down"></i></th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 3: BOWLER SCOUTING ==================== -->
+    <section id="bowlers" class="page-view">
+      <div class="page-header">
+        <span class="page-badge"><i data-lucide="crosshair"></i> Shortlist 02</span>
+        <h2 class="page-title">Top 10 Emerging Bowlers</h2>
+        <p class="page-subtitle">Ranked by weighted bowling average, economy efficiency, and strike rate metrics.</p>
+      </div>
+
+      <!-- Priority Prospects Showcase (Top 4) -->
+      <div class="priority-section-title">
+        <h3><i data-lucide="zap" style="color:#60a5fa;"></i> Top 4 Priority Bowling Prospects</h3>
+        <span class="tag-badge blue">Primary Target Tier</span>
+      </div>
+      <div class="prospects-grid" id="priorityBowlersContainer"></div>
+
+      <!-- Bowlers Comparison Chart -->
+      <div class="glass-card chart-card" style="margin-bottom:2.5rem;">
+        <div class="chart-header">
+          <h4><i data-lucide="bar-chart-2"></i> Scouting Score vs Economy Rate Efficiency</h4>
+          <span class="tag-badge pink">Top 10 Bowlers Distribution</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="bowlersChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Controls & Search -->
+      <div class="controls-bar">
+        <div class="search-box">
+          <i data-lucide="search"></i>
+          <input type="text" id="bowlerSearch" class="search-input" placeholder="Search bowler name, domestic team...">
+        </div>
+        <div class="filters-group">
+          <span style="font-size:0.8rem; color:var(--text-muted);"><i data-lucide="info"></i> Click table headers to sort</span>
+        </div>
+      </div>
+
+      <!-- Bowlers Table -->
+      <div class="table-responsive">
+        <table class="data-table" id="bowlersTable">
+          <thead>
+            <tr>
+              <th data-sort-table="bowlers" data-sort-field="Final_Rank">Rank <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="bowlers" data-sort-field="bowler_name">Bowler Name <i data-lucide="arrow-up-down"></i></th>
+              <th>Domestic Team</th>
+              <th data-sort-table="bowlers" data-sort-field="Total_Matches">Matches <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="bowlers" data-sort-field="Total_Wickets">Wickets <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="bowlers" data-sort-field="Avg_Season_Economy">Economy <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="bowlers" data-sort-field="Avg_Season_Bowling_Average">Bowling Avg <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="bowlers" data-sort-field="Avg_Season_Bowling_SR">Strike Rate <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="bowlers" data-sort-field="Final_Scouting_Score">Scouting Score <i data-lucide="arrow-up-down"></i></th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 4: BOWLING PHASE ANALYSIS ==================== -->
+    <section id="phases" class="page-view">
+      <div class="page-header">
+        <span class="page-badge"><i data-lucide="layers"></i> Tactical Breakdown</span>
+        <h2 class="page-title">Bowling Phase Mastery</h2>
+        <p class="page-subtitle">Evaluating ball-by-ball performance across Powerplay, Middle, and Death overs.</p>
+      </div>
+
+      <!-- Phase Definition Cards -->
+      <div class="phase-summary-grid">
+        <div class="glass-card phase-card powerplay">
+          <div class="phase-title"><i data-lucide="shield" style="color:#38bdf8;"></i> Powerplay Phase</div>
+          <div class="phase-overs">OVERS 0.1 – 5.6 • MANDATORY FIELD RESTRICTIONS</div>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+            Key benchmark for opening pacers and control spinners. <strong>Akash Choudhary</strong> (210 balls, 6.54 econ, 9 wkts) anchors this category.
+          </p>
+        </div>
+
+        <div class="glass-card phase-card middle">
+          <div class="phase-title"><i data-lucide="lock" style="color:#a855f7;"></i> Middle Overs Phase</div>
+          <div class="phase-overs">OVERS 6.1 – 14.6 • CHOKE & SQUEEZE PRESSURE</div>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+            Dictates boundary suppression and middle-order collapses. <strong>Khrievitso Kense</strong> (167 balls, 5.60 econ, 12 wkts) dominates with an 80.0 Phase Score.
+          </p>
+        </div>
+
+        <div class="glass-card phase-card death">
+          <div class="phase-title"><i data-lucide="flame" style="color:var(--rr-pink);"></i> Death Overs Phase</div>
+          <div class="phase-overs">OVERS 15.1 – 19.6 • MAXIMUM STRIKE LEVERAGE</div>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+            High-risk death execution where yorkers and cutters prevail. <strong>Mukhtar Hussain</strong> (96 balls, 8 wkts, 9.06 econ) leads execution.
+          </p>
+        </div>
+      </div>
+
+      <!-- Phase Score Comparison Chart -->
+      <div class="glass-card chart-card" style="margin-bottom:2.5rem;">
+        <div class="chart-header">
+          <h4><i data-lucide="trending-up"></i> Phase Specialization Score by Bowler</h4>
+          <span class="tag-badge pink">Relative Candidate Cohort Index</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="phaseComparisonChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Controls & Filter -->
+      <div class="controls-bar">
+        <div class="filters-group">
+          <label style="font-size:0.85rem; color:var(--text-muted);">Filter Phase:</label>
+          <select id="phaseFilterSelect" class="select-custom">
+            <option value="all">All Match Phases</option>
+            <option value="Powerplay">Powerplay (Overs 0-5)</option>
+            <option value="Middle">Middle Overs (Overs 6-14)</option>
+            <option value="Death">Death Overs (Overs 15-19)</option>
+          </select>
+        </div>
+        <div style="font-size:0.8rem; color:var(--text-dim);">
+          <em>Note: Phase scores are relative within the analysed candidate groups.</em>
+        </div>
+      </div>
+
+      <!-- Phase Analysis Data Table -->
+      <div class="table-responsive" style="margin-bottom:2.5rem;">
+        <table class="data-table" id="phasesTable">
+          <thead>
+            <tr>
+              <th data-sort-table="phases" data-sort-field="Bowler">Bowler <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="phases" data-sort-field="Best phase">Best Phase <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="phases" data-sort-field="Balls">Balls Bowled <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="phases" data-sort-field="Wkts">Wickets Taken <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="phases" data-sort-field="Econ">Economy Rate <i data-lucide="arrow-up-down"></i></th>
+              <th data-sort-table="phases" data-sort-field="Phase score">Phase Score <i data-lucide="arrow-up-down"></i></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Phase Heatmap Matrix -->
+      <div class="glass-card">
+        <div class="chart-header">
+          <h4><i data-lucide="grid"></i> Bowler Phase Versatility Matrix</h4>
+          <span class="tag-badge blue">Overs Distribution Coverage</span>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+          Shows match phase distribution across powerplay, middle, and death overs from ball-by-ball SMAT logs.
+        </p>
+        <div class="table-responsive">
+          <table class="data-table heatmap-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Bowler Name</th>
+                <th>Primary Best Phase</th>
+                <th>Powerplay Balls</th>
+                <th>Middle Overs Balls</th>
+                <th>Death Overs Balls</th>
+                <th>Phase Confidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align:left;"><strong>Khrievitso Kense</strong></td>
+                <td><span class="tag-badge pink">Middle Overs</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.04);">12 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(234,26,133,0.3); color:#fff;">167 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.04);">6 balls</span></td>
+                <td><span class="tag-badge blue">Verified Middle</span></td>
+              </tr>
+              <tr>
+                <td style="text-align:left;"><strong>Akash Choudhary</strong></td>
+                <td><span class="tag-badge blue">Powerplay</span></td>
+                <td><span class="heat-cell" style="background:rgba(56,189,248,0.3); color:#fff;">210 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.04);">43 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.06);">96 balls</span></td>
+                <td><span class="tag-badge blue">High PP Volume</span></td>
+              </tr>
+              <tr>
+                <td style="text-align:left;"><strong>NA Rathva</strong></td>
+                <td><span class="tag-badge pink">Middle Overs</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.06);">60 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(234,26,133,0.4); color:#fff;">318 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.04);">42 balls</span></td>
+                <td><span class="tag-badge gold">Elite Sample (318b)</span></td>
+              </tr>
+              <tr>
+                <td style="text-align:left;"><strong>Pradipta Pramanik</strong></td>
+                <td><span class="tag-badge pink">Middle Overs</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.04);">18 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(234,26,133,0.25); color:#fff;">132 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.04);">12 balls</span></td>
+                <td><span class="tag-badge blue">Moderate Sample</span></td>
+              </tr>
+              <tr>
+                <td style="text-align:left;"><strong>Mukhtar Hussain</strong></td>
+                <td><span class="tag-badge gold">Death Overs</span></td>
+                <td><span class="heat-cell" style="background:rgba(56,189,248,0.3); color:#fff;">228 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(255,255,255,0.06);">60 balls</span></td>
+                <td><span class="heat-cell" style="background:rgba(234,26,133,0.25); color:#fff;">96 balls</span></td>
+                <td><span class="tag-badge pink">PP / Death Dual</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 5: METHODOLOGY ==================== -->
+    <section id="methodology" class="page-view">
+      <div class="page-header">
+        <span class="page-badge"><i data-lucide="binary"></i> Quantitative Framework</span>
+        <h2 class="page-title">Scouting Scoring Methodology</h2>
+        <p class="page-subtitle">Detailed mathematical formulas, percentile models, weighting distributions, and boundary constraints.</p>
+      </div>
+
+      <!-- Models Breakdown Grid -->
+      <div class="methodology-grid">
+        <!-- Batter Model -->
+        <div class="glass-card formula-card">
+          <div class="formula-title" style="color:var(--rr-pink);">
+            <i data-lucide="shield"></i> Batter Scoring Model (100 pts)
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.6;">
+            Designed to balance raw run conversion rate with tempo and standard deviation consistency across seasons.
+          </p>
+
+          <ul class="weights-list">
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:var(--rr-pink);"></i> Average Percentile</span>
+                <span class="weight-val" style="color:var(--rr-pink);">25%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:25%; background:var(--rr-pink);"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:var(--rr-pink);"></i> Strike Rate Percentile</span>
+                <span class="weight-val" style="color:var(--rr-pink);">25%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:25%; background:var(--rr-pink);"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:var(--rr-pink);"></i> Total Runs Percentile</span>
+                <span class="weight-val" style="color:var(--rr-pink);">20%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:20%; background:var(--rr-pink);"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:var(--rr-pink);"></i> Scoring Consistency (SR SD inv.)</span>
+                <span class="weight-val" style="color:var(--rr-pink);">15%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:15%; background:var(--rr-pink);"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:var(--rr-pink);"></i> Recent Matches Density</span>
+                <span class="weight-val" style="color:var(--rr-pink);">10%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:10%; background:var(--rr-pink);"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:var(--rr-pink);"></i> Active Seasons Longevity</span>
+                <span class="weight-val" style="color:var(--rr-pink);">5%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:5%; background:var(--rr-pink);"></div></div>
+            </li>
+          </ul>
+
+          <div style="background:rgba(7,13,30,0.8); border:1px solid var(--border-glass); border-radius:8px; padding:0.85rem; font-family:var(--font-mono); font-size:0.75rem; color:#f8fafc;">
+            Score_Batter = 0.25*P(Avg) + 0.25*P(SR) + 0.20*P(Runs) + 0.15*P(Cons) + 0.10*P(Rec) + 0.05*P(Exp)
+          </div>
+        </div>
+
+        <!-- Bowler Model -->
+        <div class="glass-card formula-card">
+          <div class="formula-title" style="color:#60a5fa;">
+            <i data-lucide="target"></i> Bowler Scoring Model (100 pts)
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.6;">
+            Optimized to identify defensive match winners and lethal strike bowlers across tight domestic conditions.
+          </p>
+
+          <ul class="weights-list">
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:#60a5fa;"></i> Bowling Average Percentile</span>
+                <span class="weight-val" style="color:#60a5fa;">25%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:25%; background:#2563eb;"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:#60a5fa;"></i> Economy Rate Percentile</span>
+                <span class="weight-val" style="color:#60a5fa;">25%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:25%; background:#2563eb;"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:#60a5fa;"></i> Total Wickets Percentile</span>
+                <span class="weight-val" style="color:#60a5fa;">20%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:20%; background:#2563eb;"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:#60a5fa;"></i> Bowling Strike Rate</span>
+                <span class="weight-val" style="color:#60a5fa;">15%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:15%; background:#2563eb;"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:#60a5fa;"></i> Economy Consistency (Econ SD inv.)</span>
+                <span class="weight-val" style="color:#60a5fa;">10%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:10%; background:#2563eb;"></div></div>
+            </li>
+            <li>
+              <div class="weight-item">
+                <span class="weight-name"><i data-lucide="chevron-right" style="color:#60a5fa;"></i> Recent Matches Density</span>
+                <span class="weight-val" style="color:#60a5fa;">5%</span>
+              </div>
+              <div class="weight-bar-wrapper"><div class="weight-bar-fill" style="width:5%; background:#2563eb;"></div></div>
+            </li>
+          </ul>
+
+          <div style="background:rgba(7,13,30,0.8); border:1px solid var(--border-glass); border-radius:8px; padding:0.85rem; font-family:var(--font-mono); font-size:0.75rem; color:#f8fafc;">
+            Score_Bowler = 0.25*P(Avg) + 0.25*P(Econ) + 0.20*P(Wkts) + 0.15*P(SR) + 0.10*P(Cons) + 0.05*P(Rec)
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate Filtering Criteria -->
+      <div class="glass-card" style="margin-bottom:2.5rem;">
+        <h3 style="font-size:1.15rem; font-weight:800; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
+          <i data-lucide="filter" style="color:var(--rr-pink);"></i> Candidate Filtering & Eligibility Rules
+        </h3>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+          <div style="background:rgba(7,13,30,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-glass);">
+            <strong style="color:#fff; display:block; margin-bottom:0.25rem;">1. Batting Qualification Threshold</strong>
+            <p style="font-size:0.85rem; color:var(--text-muted);">
+              Must have played at least <strong>8 domestic T20 matches</strong> and scored a minimum of <strong>250 career runs</strong> in the SMAT database.
+            </p>
+          </div>
+          <div style="background:rgba(7,13,30,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-glass);">
+            <strong style="color:#fff; display:block; margin-bottom:0.25rem;">2. Bowling Qualification Threshold</strong>
+            <p style="font-size:0.85rem; color:var(--text-muted);">
+              Must have bowled in at least <strong>8 domestic T20 matches</strong> and claimed a minimum of <strong>12 wickets</strong>.
+            </p>
+          </div>
+          <div style="background:rgba(7,13,30,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-glass);">
+            <strong style="color:#fff; display:block; margin-bottom:0.25rem;">3. Age Demographics Filter</strong>
+            <p style="font-size:0.85rem; color:var(--text-muted);">
+              Candidates filtered at <strong>Age ≤ 29</strong> as a supporting talent identification criterion to spotlight prime recruitment years for IPL 2027.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Official Data Integrity & Limitations Alert -->
+      <div class="alert-callout">
+        <div class="alert-title">
+          <i data-lucide="alert-triangle"></i> Official Model Limitations & Integrity Disclosures
+        </div>
+        <ul class="alert-list">
+          <li><strong>Data Archive Horizon:</strong> Historical domestic SMAT delivery archive terminates in the 2024/25 season. 2025/26 form is not captured in this model.</li>
+          <li><strong>IPL Career Audit:</strong> The identity match audit covers available tournament data from 2022–2026. Name matching limitations mean "No appearance found" is not proof of zero career exposure.</li>
+          <li><strong>Relative Percentiles:</strong> Percentile distributions are calculated strictly relative to the filtered candidate pool, not all historical cricket participants.</li>
+          <li><strong>Sample Variance:</strong> Small sample sizes (e.g. 9–11 matches) can create upward or downward statistical sensitivity in individual rankings.</li>
+          <li><strong>Auction Verification:</strong> The model does not independently establish player availability, NOC status, or BCCI auction registration.</li>
+          <li><strong>Team Suitability:</strong> Statistical dominance does not automatically guarantee role chemistry; franchise trials and video assessments remain imperative.</li>
+          <li><strong>Non-Affiliation:</strong> PRESSURE-X is an independent sports analytics evaluation framework and does not claim official commercial endorsement by Rajasthan Royals.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 6: RECRUITMENT INSIGHTS ==================== -->
+    <section id="recruitment" class="page-view">
+      <div class="page-header">
+        <span class="page-badge"><i data-lucide="clipboard-check"></i> Recruitment Strategy</span>
+        <h2 class="page-title">IPL 2027 Scouting Recommendations</h2>
+        <p class="page-subtitle">Actionable scouting dossiers and tactical fit assessments for Rajasthan Royals' scouting network.</p>
+      </div>
+
+      <!-- Priority Batters Recommendations -->
+      <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:1.25rem; display:flex; align-items:center; gap:0.5rem;">
+        <i data-lucide="award" style="color:var(--rr-pink);"></i> Priority Batting Prospects
+      </h3>
+
+      <div class="prospects-grid" style="grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); margin-bottom:2.5rem;">
+        <!-- Prospect 1: Virat Singh -->
+        <div class="glass-card prospect-card">
+          <div>
+            <div class="prospect-header">
+              <div class="prospect-identity">
+                <div class="prospect-rank-badge rank-1">#1</div>
+                <div class="prospect-names">
+                  <h4>Virat Singh</h4>
+                  <div class="team-tag">Jharkhand • Age 28 • Left-Hand Bat</div>
+                </div>
+              </div>
+              <div class="score-pill">
+                <div class="score-num">73.96</div>
+                <div class="score-title">Scouting Score</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              <p><strong>Why Shortlisted:</strong> Unrivaled domestic aggregate with 1,236 runs in 36 matches at a 46.94 average. Possesses high 98.7 percentile run volume combined with verified 2021 IPL experience.</p>
+            </div>
+
+            <div class="prospect-metrics" style="grid-template-columns:repeat(2, 1fr); margin-bottom:1rem;">
+              <div class="metric-cell"><div class="label">Primary Role</div><div class="val" style="font-size:0.85rem">Middle Order Anchor / Finisher</div></div>
+              <div class="metric-cell"><div class="label">Strike Rate</div><div class="val">129.46</div></div>
+            </div>
+
+            <div style="background:rgba(7,13,30,0.6); padding:0.85rem; border-radius:8px; border:1px solid var(--border-glass); margin-bottom:1rem; font-size:0.8rem; color:var(--text-muted);">
+              <strong>Recruitment Action:</strong> Comprehensive video analysis against express pace and spin chokes; verify availability for pre-auction trials.
+            </div>
+          </div>
+          <span class="tag-badge pink" style="width:fit-content;">Tier 1 Priority Target</span>
+        </div>
+
+        <!-- Prospect 2: Atharva Taide -->
+        <div class="glass-card prospect-card">
+          <div>
+            <div class="prospect-header">
+              <div class="prospect-identity">
+                <div class="prospect-rank-badge rank-2">#2</div>
+                <div class="prospect-names">
+                  <h4>Atharva Taide</h4>
+                  <div class="team-tag">Vidarbha • Age 26 • Left-Hand Bat</div>
+                </div>
+              </div>
+              <div class="score-pill">
+                <div class="score-num">62.72</div>
+                <div class="score-title">Scouting Score</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              <p><strong>Why Shortlisted:</strong> High-ceiling top-order aggressor with 631 runs in 25 matches (38.51 avg, 124.99 SR). Strong powerplay exploitation instincts and prime age profile (26).</p>
+            </div>
+
+            <div class="prospect-metrics" style="grid-template-columns:repeat(2, 1fr); margin-bottom:1rem;">
+              <div class="metric-cell"><div class="label">Primary Role</div><div class="val" style="font-size:0.85rem">Opening Batter / No. 3 Aggressor</div></div>
+              <div class="metric-cell"><div class="label">Recent Matches Score</div><div class="val">74.68%</div></div>
+            </div>
+
+            <div style="background:rgba(7,13,30,0.6); padding:0.85rem; border-radius:8px; border:1px solid var(--border-glass); margin-bottom:1rem; font-size:0.8rem; color:var(--text-muted);">
+              <strong>Recruitment Action:</strong> Assess matchup versatility vs wrist-spin; schedule net sessions at RR high performance centre.
+            </div>
+          </div>
+          <span class="tag-badge pink" style="width:fit-content;">Tier 1 Priority Target</span>
+        </div>
+
+        <!-- Prospect 3: Shivam Chauhan -->
+        <div class="glass-card prospect-card">
+          <div>
+            <div class="prospect-header">
+              <div class="prospect-identity">
+                <div class="prospect-rank-badge rank-3">#3</div>
+                <div class="prospect-names">
+                  <h4>Shivam Chauhan</h4>
+                  <div class="team-tag">Haryana • Age 29 • Right-Hand Bat</div>
+                </div>
+              </div>
+              <div class="score-pill">
+                <div class="score-num">55.34</div>
+                <div class="score-title">Scouting Score</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              <p><strong>Why Shortlisted:</strong> 100th percentile consistency score across domestic seasons. Scored 627 runs in 22 games with a dependable 31.84 average in crucial middle overs.</p>
+            </div>
+
+            <div class="prospect-metrics" style="grid-template-columns:repeat(2, 1fr); margin-bottom:1rem;">
+              <div class="metric-cell"><div class="label">Primary Role</div><div class="val" style="font-size:0.85rem">Middle Order Stabilizer</div></div>
+              <div class="metric-cell"><div class="label">Consistency Score</div><div class="val">100.0%</div></div>
+            </div>
+
+            <div style="background:rgba(7,13,30,0.6); padding:0.85rem; border-radius:8px; border:1px solid var(--border-glass); margin-bottom:1rem; font-size:0.8rem; color:var(--text-muted);">
+              <strong>Recruitment Action:</strong> Evaluate scoring options against high boundary dimensions; role assessment for middle overs collapse prevention.
+            </div>
+          </div>
+          <span class="tag-badge pink" style="width:fit-content;">Tier 1 Priority Target</span>
+        </div>
+      </div>
+
+      <!-- Priority Bowlers Recommendations -->
+      <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:1.25rem; display:flex; align-items:center; gap:0.5rem;">
+        <i data-lucide="target" style="color:#60a5fa;"></i> Priority Bowling Prospects
+      </h3>
+
+      <div class="prospects-grid" style="grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); margin-bottom:2.5rem;">
+        <!-- Bowler 1: Khrievitso Kense -->
+        <div class="glass-card prospect-card bowler-card">
+          <div>
+            <div class="prospect-header">
+              <div class="prospect-identity">
+                <div class="prospect-rank-badge rank-1">#1</div>
+                <div class="prospect-names">
+                  <h4>Khrievitso Kense</h4>
+                  <div class="team-tag">Nagaland • Age 22 • Leg-Spin Mystery</div>
+                </div>
+              </div>
+              <div class="score-pill blue">
+                <div class="score-num">75.23</div>
+                <div class="score-title">Scouting Score</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              <p><strong>Why Shortlisted:</strong> Astonishing 5.39 overall economy and 13.50 average at age 22. Ranked #1 in Middle Overs phase analysis (80.0 Phase score, 5.60 econ in 167 balls).</p>
+            </div>
+
+            <div class="prospect-metrics" style="grid-template-columns:repeat(2, 1fr); margin-bottom:1rem;">
+              <div class="metric-cell"><div class="label">Best Phase</div><div class="val" style="font-size:0.85rem">Middle Overs (6-14)</div></div>
+              <div class="metric-cell"><div class="label">Bowling SR</div><div class="val">15.13</div></div>
+            </div>
+
+            <div style="background:rgba(7,13,30,0.6); padding:0.85rem; border-radius:8px; border:1px solid var(--border-glass); margin-bottom:1rem; font-size:0.8rem; color:var(--text-muted);">
+              <strong>Recruitment Action:</strong> Invite to Jaipur preparatory camp for live testing against IPL-level right-hand bat aggression; fast-track development.
+            </div>
+          </div>
+          <span class="tag-badge blue" style="width:fit-content;">Tier 1 Priority Target</span>
+        </div>
+
+        <!-- Bowler 2: NA Rathva -->
+        <div class="glass-card prospect-card bowler-card">
+          <div>
+            <div class="prospect-header">
+              <div class="prospect-identity">
+                <div class="prospect-rank-badge rank-2">#2</div>
+                <div class="prospect-names">
+                  <h4>NA Rathva</h4>
+                  <div class="team-tag">Baroda • Age 27 • Slow Left-Arm Orthodox</div>
+                </div>
+              </div>
+              <div class="score-pill blue">
+                <div class="score-num">69.63</div>
+                <div class="score-title">Scouting Score</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              <p><strong>Why Shortlisted:</strong> Exceptional sample reliability with 27 wickets in 27 matches. Bowled 318 balls in middle overs (6.87 econ, 15 wkts) for a 70.0 Phase score.</p>
+            </div>
+
+            <div class="prospect-metrics" style="grid-template-columns:repeat(2, 1fr); margin-bottom:1rem;">
+              <div class="metric-cell"><div class="label">Best Phase</div><div class="val" style="font-size:0.85rem">Middle Overs Anchor</div></div>
+              <div class="metric-cell"><div class="label">Sample Confidence</div><div class="val">318 Phase Balls</div></div>
+            </div>
+
+            <div style="background:rgba(7,13,30,0.6); padding:0.85rem; border-radius:8px; border:1px solid var(--border-glass); margin-bottom:1rem; font-size:0.8rem; color:var(--text-muted);">
+              <strong>Recruitment Action:</strong> Direct squad backup for Ravichandran Ashwin / left-arm spin match-ups at Sawai Mansingh Stadium.
+            </div>
+          </div>
+          <span class="tag-badge blue" style="width:fit-content;">Tier 1 Priority Target</span>
+        </div>
+
+        <!-- Bowler 3: Akash Choudhary -->
+        <div class="glass-card prospect-card bowler-card">
+          <div>
+            <div class="prospect-header">
+              <div class="prospect-identity">
+                <div class="prospect-rank-badge rank-3">#3</div>
+                <div class="prospect-names">
+                  <h4>Akash Choudhary</h4>
+                  <div class="team-tag">Meghalaya • Age 27 • Right-Arm Fast-Medium</div>
+                </div>
+              </div>
+              <div class="score-pill blue">
+                <div class="score-num">63.22</div>
+                <div class="score-title">Scouting Score</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              <p><strong>Why Shortlisted:</strong> #1 Ranked Powerplay bowler in the analysis (75.0 Phase score). In 210 Powerplay balls, conceded just 6.54 econ while taking 9 key top-order wickets.</p>
+            </div>
+
+            <div class="prospect-metrics" style="grid-template-columns:repeat(2, 1fr); margin-bottom:1rem;">
+              <div class="metric-cell"><div class="label">Best Phase</div><div class="val" style="font-size:0.85rem">Powerplay (Overs 0-5)</div></div>
+              <div class="metric-cell"><div class="label">PP Economy</div><div class="val">6.54</div></div>
+            </div>
+
+            <div style="background:rgba(7,13,30,0.6); padding:0.85rem; border-radius:8px; border:1px solid var(--border-glass); margin-bottom:1rem; font-size:0.8rem; color:var(--text-muted);">
+              <strong>Recruitment Action:</strong> Test seam control with the new white ball under lights; pace speed gun assessment at trials.
+            </div>
+          </div>
+          <span class="tag-badge blue" style="width:fit-content;">Tier 1 Priority Target</span>
+        </div>
+
+        <!-- Bowler 4: Pradipta Pramanik -->
+        <div class="glass-card prospect-card bowler-card">
+          <div>
+            <div class="prospect-header">
+              <div class="prospect-identity">
+                <div class="prospect-rank-badge rank-default">#4</div>
+                <div class="prospect-names">
+                  <h4>Pradipta Pramanik</h4>
+                  <div class="team-tag">Bengal • Age 28 • Slow Left-Arm Orthodox</div>
+                </div>
+              </div>
+              <div class="score-pill blue">
+                <div class="score-num">56.43</div>
+                <div class="score-title">Scouting Score</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1rem; font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              <p><strong>Why Shortlisted:</strong> Outstanding 11.40 bowling average and 11.80 strike rate across 10 matches (99.2 percentile average). Middle phase economy of 6.32 with 65.0 Phase score.</p>
+            </div>
+
+            <div class="prospect-metrics" style="grid-template-columns:repeat(2, 1fr); margin-bottom:1rem;">
+              <div class="metric-cell"><div class="label">Best Phase</div><div class="val" style="font-size:0.85rem">Middle Overs (6-14)</div></div>
+              <div class="metric-cell"><div class="label">Bowling Average</div><div class="val">11.40</div></div>
+            </div>
+
+            <div style="background:rgba(7,13,30,0.6); padding:0.85rem; border-radius:8px; border:1px solid var(--border-glass); margin-bottom:1rem; font-size:0.8rem; color:var(--text-muted);">
+              <strong>Recruitment Action:</strong> Monitor recent 2024/25 Bengal performances; verify trajectory drift against overseas batter triggers.
+            </div>
+          </div>
+          <span class="tag-badge blue" style="width:fit-content;">Tier 1 Priority Target</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 7: DOWNLOADS ==================== -->
+    <section id="downloads" class="page-view">
+      <div class="page-header">
+        <span class="page-badge"><i data-lucide="folder-down"></i> Export Intelligence</span>
+        <h2 class="page-title">Scouting Data & Reports Hub</h2>
+        <p class="page-subtitle">Download authentic project output files, comprehensive Excel reports, CSV matrices, and executive presentation decks.</p>
+      </div>
+
+      <div class="downloads-grid">
+        <!-- Excel Report -->
+        <div class="glass-card download-card">
+          <div>
+            <span class="file-type-badge xlsx"><i data-lucide="file-spreadsheet"></i> EXCEL REPORT</span>
+            <h4 class="download-title">Complete Scouting Report</h4>
+            <p class="download-desc">
+              Multi-tab master workbook including Executive Summary, Shortlisted Batters, Bowlers, Phase Statistics, Recruitment Matrix, and Integrity Disclosures.
+            </p>
+          </div>
+          <a href="data/PRESSURE_X_Final_Scouting_Report.xlsx" download="PRESSURE_X_Final_Scouting_Report.xlsx" class="btn btn-primary">
+            <i data-lucide="download"></i> Download .XLSX
+          </a>
+        </div>
+
+        <!-- Presentation Deck -->
+        <div class="glass-card download-card">
+          <div>
+            <span class="file-type-badge pptx"><i data-lucide="presentation"></i> PRESENTATION DECK</span>
+            <h4 class="download-title">Scouting Presentation PPTX</h4>
+            <p class="download-desc">
+              Executive 6-slide briefing deck designed for presentation to Rajasthan Royals leadership and head of cricket recruitment.
+            </p>
+          </div>
+          <a href="data/PRESSURE_X_Project_Presentation.pptx" download="PRESSURE_X_Project_Presentation.pptx" class="btn btn-primary" style="background:linear-gradient(135deg, #a855f7, #6366f1);">
+            <i data-lucide="download"></i> Download .PPTX
+          </a>
+        </div>
+
+        <!-- Final 10 Batters CSV -->
+        <div class="glass-card download-card">
+          <div>
+            <span class="file-type-badge csv"><i data-lucide="file-text"></i> CSV DATA</span>
+            <h4 class="download-title">Final 10 Batters Dataset</h4>
+            <p class="download-desc">
+              Raw authenticated CSV export containing the 10 qualified domestic batters with match counts, runs, and final weighted scouting scores.
+            </p>
+          </div>
+          <a href="data/PRESSURE_X_Final_10_Batters.csv" download="PRESSURE_X_Final_10_Batters.csv" class="btn btn-secondary">
+            <i data-lucide="download"></i> Download .CSV
+          </a>
+        </div>
+
+        <!-- Final 10 Bowlers CSV -->
+        <div class="glass-card download-card">
+          <div>
+            <span class="file-type-badge csv"><i data-lucide="file-text"></i> CSV DATA</span>
+            <h4 class="download-title">Final 10 Bowlers Dataset</h4>
+            <p class="download-desc">
+              Raw authenticated CSV export containing the 10 qualified domestic bowlers with match counts, wickets, and final scouting scores.
+            </p>
+          </div>
+          <a href="data/PRESSURE_X_Final_10_Bowlers.csv" download="PRESSURE_X_Final_10_Bowlers.csv" class="btn btn-secondary">
+            <i data-lucide="download"></i> Download .CSV
+          </a>
+        </div>
+
+        <!-- Bowling Phase Analysis CSV -->
+        <div class="glass-card download-card">
+          <div>
+            <span class="file-type-badge csv"><i data-lucide="file-text"></i> CSV DATA</span>
+            <h4 class="download-title">Bowling Phase Analysis</h4>
+            <p class="download-desc">
+              Ball-by-ball phase metrics covering Powerplay, Middle, and Death overs: balls bowled, wickets taken, economy rates, and phase scores.
+            </p>
+          </div>
+          <a href="data/PRESSURE_X_Bowling_Phase_Analysis.csv" download="PRESSURE_X_Bowling_Phase_Analysis.csv" class="btn btn-secondary">
+            <i data-lucide="download"></i> Download .CSV
+          </a>
+        </div>
+
+        <!-- Master Enriched JSON -->
+        <div class="glass-card download-card">
+          <div>
+            <span class="file-type-badge csv" style="background:rgba(245,158,11,0.15); color:#fbbf24; border-color:rgba(245,158,11,0.3);"><i data-lucide="code"></i> JSON DATA</span>
+            <h4 class="download-title">Full Consolidated JSON</h4>
+            <p class="download-desc">
+              Machine-readable structured payload consolidating all batters, bowlers, and phase matrices for seamless web API integration.
+            </p>
+          </div>
+          <a href="data/dataset.json" download="PRESSURE_X_Dataset.json" class="btn btn-secondary">
+            <i data-lucide="download"></i> Download .JSON
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Player Detail Modal -->
+  <div class="modal-backdrop" id="playerModal">
+    <div class="modal-dialog">
+      <button class="modal-close" onclick="closePlayerModal()" aria-label="Close modal">
+        <i data-lucide="x"></i>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Website Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4><span class="brand-logo-badge" style="width:28px; height:28px; font-size:0.75rem;">RR</span> PRESSURE-X</h4>
+          <p class="footer-desc">
+            Next-generation T20 domestic cricket scouting analytics built for sports data engineers and franchise scouting executives preparing for the IPL 2027 auction cycle.
+          </p>
+        </div>
+
+        <div>
+          <h5 class="footer-heading">Platform Modules</h5>
+          <ul class="footer-links">
+            <li><a href="#" data-target-page="home">Home Dashboard</a></li>
+            <li><a href="#" data-target-page="batters">Batter Analytics (10)</a></li>
+            <li><a href="#" data-target-page="bowlers">Bowler Analytics (10)</a></li>
+            <li><a href="#" data-target-page="phases">Bowling Phase Model</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-heading">Documentation</h5>
+          <ul class="footer-links">
+            <li><a href="#" data-target-page="methodology">Scoring Methodology</a></li>
+            <li><a href="#" data-target-page="recruitment">Recruitment Insights</a></li>
+            <li><a href="#" data-target-page="downloads">Download Reports Hub</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026-2027 PRESSURE-X Analytics. All rights reserved. Built for sports data analytics engineering.
+        </div>
+        <div style="color:var(--text-dim);">
+          Data Source: Indian Domestic SMAT Ball-by-Ball Records (Through 2024/25) • Non-Official Project
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
